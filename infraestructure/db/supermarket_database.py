@@ -1,10 +1,11 @@
 import sqlite3
-from app.entities.Customer import Customer
+from app.entities.Customer import Customer, CustomerInterface
 
 
 class Supermarket:
-    def saveCustomer(self, customer: Customer) -> None:
-        try:
+    def saveCustomer(self, customer: CustomerInterface) -> None:
+        if self.getCustomer(customer.get_cpf()) != None: return "Cliente ja cadastrado."
+        try:            
             conn = sqlite3.connect('supermarket.db')
             cursor = conn.cursor()
             query = "INSERT INTO customers (name, cpf, email) VALUES (?, ?, ?)"
