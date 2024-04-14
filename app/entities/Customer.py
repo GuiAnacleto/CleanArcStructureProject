@@ -1,51 +1,52 @@
 import re
+import uuid
 from abc import ABC, abstractmethod
 
 class CustomerInterface(ABC):
     @abstractmethod
-    def get_name(self) -> str:
-        pass
+    def get_Id(self) -> str: pass
+    
+    @abstractmethod
+    def get_name(self) -> str: pass
 
     @abstractmethod
-    def get_cpf(self) -> str:
-        pass
+    def get_cpf(self) -> str: pass
 
     @abstractmethod
-    def get_email(self) -> str:
-        pass
+    def get_email(self) -> str: pass
 
     @abstractmethod
-    def set_email(self, email: str) -> None:
-        pass
+    def set_email(self, email: str) -> None: pass
 
     @abstractmethod
-    def __str__(self) -> str:
-        pass
+    def __str__(self) -> str: pass
 
 class Customer(CustomerInterface):
     def __init__(self, name: str, cpf: str, email: str):
         if not self.__isValidCpf(cpf): raise ValueError("CPF inválido. O cliente não pode ser criado.")
+        if not self.__isValidEmail(email): raise ValueError("E-mail inválido. O cliente não pode ser criado.")
+        self.__customerId = str(uuid.uuid4())
         self.__name = name
         self.__cpf = self.__set_cpf(cpf)
         self.__email = email
 
-    def get_name(self) -> str:
-        return self.__name
-    
-    def get_cpf(self) -> str:
-        return self.__cpf
+    def get_Id(self, ): return self.__customerId
 
-    def get_email(self) -> str:
-        return self.__email
+    def get_name(self) -> str: return self.__name
     
-    def __set_cpf(self, cpf: str) -> str:
-        return re.sub(r'[^0-9]', '', cpf)
+    def get_cpf(self) -> str: return self.__cpf
+
+    def get_email(self) -> str: return self.__email
     
-    def set_email(self, email: str) -> None:
-        self.__email = email
+    def __set_cpf(self, cpf: str) -> str: return re.sub(r'[^0-9]', '', cpf)
     
-    def __str__(self, ) -> str:
-        return f"Customer(Name: {self.__name}, CPF: {self.__cpf}, E-mail: {self.__email})"
+    def set_email(self, email: str) -> None: self.__email = email
+    
+    def __str__(self, ) -> str: return f"Customer(Name: {self.__name}, CPF: {self.__cpf}, E-mail: {self.__email})"
+
+    def __isValidEmail(self, email: str) -> bool:
+        emailPatern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        return True if re.match(emailPatern, email) else False
 
     def __isValidCpf(self, cpf: str) -> bool:
         cpf = re.sub(r'[^0-9]', '', cpf)

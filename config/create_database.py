@@ -23,7 +23,7 @@ def criar_banco_dados():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS customers (
-            customer_id INTEGER PRIMARY KEY,
+            customer_id TEXT NOT NULL PRIMARY KEY,
             name TEXT NOT NULL,
             cpf TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL UNIQUE
